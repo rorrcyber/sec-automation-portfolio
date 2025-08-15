@@ -1,5 +1,4 @@
 name: CI
-
 on: [push, pull_request]
 
 jobs:
@@ -20,5 +19,6 @@ jobs:
           pip install -r 01-ssh-bruteforce-detector/requirements.txt
 
       - name: Run tests
+        working-directory: 01-ssh-bruteforce-detector
         run: |
-          python -m pytest -q 01-ssh-bruteforce-detector/tests
+          python -m pytest -q tests
