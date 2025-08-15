@@ -1,0 +1,9 @@
+name: SSH Brute Force
+description: Detect >= N failed SSH logins from a single IP within a time window.
+window_minutes: 1
+threshold: 2
+pattern:
+  contains_all:
+    - Failed password for
+    - sshd
+extract_ip_regex: '(?:from )(?P<ip>\d+\.\d+\.\d+\.\d+)'
