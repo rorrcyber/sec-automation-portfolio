@@ -1,13 +1,26 @@
-name: ci
-on: [push, pull_request]
+name: CI
+
+on:
+  [push, pull_request]
+
 jobs:
   tests:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
-      - run: pip install -r 01-ssh-bruteforce-detector/requirements.txt pytest
-      - run: pytest -q
-        working-directory: 01-ssh-bruteforce-detector
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          pip install -r 01-ssh-bruteforce-detector/requirements.txt
+
+      - name: Run tests
+        env:
+          PYTHONPATH: 01-ssh-bruteforce-detector
+        run: |
+          cd 01-ssh-bruteforce-detector
+          pytest -q
