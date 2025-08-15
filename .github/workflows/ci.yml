@@ -4,10 +4,15 @@ on: [push, pull_request]
 jobs:
   tests:
     runs-on: ubuntu-latest
-    env:
-      PYTHONPATH: ${{ github.workspace }}/01-ssh-bruteforce-detector
+
+    # Make every step run from the detector folder
+    defaults:
+      run:
+        working-directory: 01-ssh-bruteforce-detector
+
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -15,10 +20,10 @@ jobs:
           python-version: "3.11"
 
       - name: Install dependencies
-        run: |
-          pip install -r 01-ssh-bruteforce-detector/requirements.txt
+        run: pip install -r requirements.txt
 
       - name: Run tests
-        working-directory: 01-ssh-bruteforce-detector
-        run: |
-          python -m pytest -q tests
+        # Make sure Python can import the 'src' package
+        env:
+          PYTHONPATH: ${{ github.workspace }}/01-ssh-bruteforce-detector
+        run: python -m pytest -q tests
