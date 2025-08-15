@@ -1,7 +1,6 @@
 name: CI
 
-on:
-  [push, pull_request]
+on: [push, pull_request]
 
 jobs:
   tests:
@@ -20,7 +19,6 @@ jobs:
 
       - name: Run tests
         env:
-          PYTHONPATH: 01-ssh-bruteforce-detector
+          PYTHONPATH: ${{ github.workspace }}/01-ssh-bruteforce-detector
         run: |
-          cd 01-ssh-bruteforce-detector
-          pytest -q
+          pytest -q 01-ssh-bruteforce-detector/tests
