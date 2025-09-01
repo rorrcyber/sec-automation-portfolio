@@ -1,18 +1,27 @@
-# SSH Brute-Force Detector (Python)
+name: CI
 
-Detects repeated failed SSH logins in syslog/auth.log and emits alerts.
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
-## Quickstart
-```bash
-pip install -r requirements.txt
-python src/detector.py --log samples/auth.log.sample
-```
-Use `--follow` to tail a live `/var/log/auth.log`.
+jobs:
+  test:
+    runs-on: ubuntu-latest
 
-## Send alerts
-Add `--slack https://hooks.slack...` or `--splunk-hec https://SPLUNK:8088 --splunk-token <token>` (stubs now).
+    steps:
+    - uses: actions/checkout@v4
 
-## Tests
-```bash
-pytest -q
-```
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.11"
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Run tests
+      run: pytest -q
